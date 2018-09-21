@@ -18,19 +18,19 @@ class Request:
         self.client_secret = getenv('CLIENT_SECRET')
         self.__authenticate()
 
-    def get(self, url, parsed=False):
+    def get(self, url, query={}, parsed=False):
         """ Makes a get request to the Spotify API """
         headers = {
             "Authorization": f"Bearer {self.access_token}"
         }
         parsed_url = url_parser.parse(url) if not parsed else url
         response = request(
-            "GET", parsed_url, headers=headers)
+            "GET", parsed_url, headers=headers, params=query)
         if response.status_code == 200:
             return json.loads(response.text)
         elif response.status_code == 401:
             self.__authenticate()
-            return self.get(parsed_url, True)
+            return self.get(parsed_url, query, True)
         else:
             raise Exception(response.text)
 
