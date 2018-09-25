@@ -4,6 +4,7 @@ from base64 import b64encode
 from requests import request
 from dotenv import load_dotenv
 from pathlib import Path
+from time import sleep
 
 from . import url_parser
 
@@ -27,9 +28,15 @@ class Request:
         response = request(
             "GET", parsed_url, headers=headers, params=query)
         if response.status_code == 200:
+            # Successful GET request
             return json.loads(response.text)
         elif response.status_code == 401:
+            # Need to reauthenticate
             self.__authenticate()
+            return self.get(parsed_url, query, True)
+        elif response.status_code == 429:
+            # Rate limiting from Spotify API
+            sleep(response.headers['Retry-After'])
             return self.get(parsed_url, query, True)
         else:
             raise Exception(response.text)
@@ -46,10 +53,6 @@ class Request:
         }
         response = request("POST", token_url,
                            data=payload, headers=headers)
-        self.__parse_auth_response(response)
-
-    def __parse_auth_response(self, response):
-        """ Parses the response of the authentication request """
         if response.status_code != 200:
             raise Exception("Unable to authenticate")
         parsed_response = json.loads(response.text)
