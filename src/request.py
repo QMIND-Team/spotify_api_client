@@ -36,7 +36,7 @@ class Request:
             return self.get(parsed_url, query, True)
         elif response.status_code == 429:
             # Rate limiting from Spotify API
-            sleep(response.headers['Retry-After'])
+            sleep(int(response.headers['Retry-After']))
             return self.get(parsed_url, query, True)
         else:
             raise Exception(response.text)
