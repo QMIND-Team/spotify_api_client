@@ -40,11 +40,25 @@ Here are some examples of how you can use this library to easily make requests t
 from spotify_api_client import get
 
 # Gets a list of greatest hits albums
-response = get("v1/search", {'q':'greatest hits', 'type':'album'})
+response = get('v1/search', {'q':'greatest hits', 'type':'album'})
 print(response)
 
 # The following will also return the same result
-response = get("/v1/search?q='greatest hits'&type=album")
+response = get('/v1/search?q='greatest hits'&type=album')
+print(response)
+```
+
+Or alternatively you could do
+
+```python
+from spotify_api_client import search, search_all
+
+# Gets the id of the first greatest hits album from the search results
+response = search('greatest hits', 'album')
+print(response)
+
+# Gets the ids of all the greatest hits album from the search results (limit 20)
+response = search_all('greatest hits', 'album')
 print(response)
 ```
 
@@ -52,7 +66,7 @@ print(response)
 import spotify_api_client as client
 
 # Gets track with id 1UjyF6okUHhnVxaLV8ojsA (Am I Wrong by Anderson .Paak)
-response = client.get("api.spotify.com/v1/tracks/1UjyF6okUHhnVxaLV8ojsA")
+response = client.get('api.spotify.com/v1/tracks/1UjyF6okUHhnVxaLV8ojsA')
 print(response)
 ```
 
@@ -60,5 +74,5 @@ print(response)
 import spotify_api_client
 
 # Gets album with id 7xJ7jHNu3JNfdnao9xwMho (Donuts by J Dilla)
-spotify_api_client.get("https://api.spotify.com/v1/albums/7xJ7jHNu3JNfdnao9xwMho")
+spotify_api_client.get('https://api.spotify.com/v1/albums/7xJ7jHNu3JNfdnao9xwMho')
 ```

@@ -10,7 +10,7 @@ from . import url_parser
 
 load_dotenv(dotenv_path=Path(".env"))
 
-token_url = "https://accounts.spotify.com/api/token"
+token_url = 'https://accounts.spotify.com/api/token'
 
 
 class Request:
@@ -22,11 +22,11 @@ class Request:
     def get(self, url, query={}, parsed=False):
         """ Makes a get request to the Spotify API """
         headers = {
-            "Authorization": f"Bearer {self.access_token}"
+            'Authorization': f'Bearer {self.access_token}'
         }
         parsed_url = url_parser.parse(url) if not parsed else url
         response = request(
-            "GET", parsed_url, headers=headers, params=query)
+            'GET', parsed_url, headers=headers, params=query)
         if response.status_code == 200:
             # Successful GET request
             return json.loads(response.text)
@@ -41,6 +41,16 @@ class Request:
         else:
             raise Exception(response.text)
 
+    def search(self, query, type):
+        response = self.get('https://api.spotify.com/v1/search',
+                            {'q': query, 'type': type}, True)
+        return response[f'{type}s']['items'][0]['id']
+
+    def search_all(self, query, type):
+        response = self.get('https://api.spotify.com/v1/search',
+                            {'q': query, 'type': type}, True)
+        return list(map(lambda i: i['id'], response[f'{type}s']['items']))
+
     def __authenticate(self):
         """ Generates an access token for the Spotify API """
         client_details = f'{self.client_id}:{self.client_secret}'.encode(
@@ -48,12 +58,12 @@ class Request:
         basic_auth = b64encode(client_details).decode('utf8')
         payload = "grant_type=client_credentials"
         headers = {
-            'Authorization': f"Basic {basic_auth}",
-            'Content-Type': "application/x-www-form-urlencoded"
+            'Authorization': f'Basic {basic_auth}',
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
-        response = request("POST", token_url,
+        response = request('POST', token_url,
                            data=payload, headers=headers)
         if response.status_code != 200:
-            raise Exception("Unable to authenticate")
+            raise Exception('Unable to authenticate')
         parsed_response = json.loads(response.text)
         self.access_token = parsed_response['access_token']

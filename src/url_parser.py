@@ -13,6 +13,6 @@ def parse(url):
 
     starts_with_v1_regex = re.compile(r'^/?v1/.+')
     if(re.match(starts_with_v1_regex, url)):
-        return f'https://api.spotify.com{url}' if url.startswith("/") else f'https://api.spotify.com/{url}'
+        return f'https://api.spotify.com{url}' if url.startswith('/') else f'https://api.spotify.com/{url}'
 
-    raise Exception("Invalid URL provided")
+    raise Exception('Invalid URL provided')
