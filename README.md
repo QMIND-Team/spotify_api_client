@@ -44,7 +44,7 @@ response = get('v1/search', {'q':'greatest hits', 'type':'album'})
 print(response)
 
 # The following will also return the same result
-response = get('/v1/search?q='greatest hits'&type=album')
+response = get('/v1/search?q=greatest hits&type=album')
 print(response)
 ```
 
