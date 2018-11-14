@@ -1,6 +1,5 @@
-from . import src
+from . import spotify_api_client as client
 
-client = src.Request()
 get = client.get
 search = client.search
 search_all = client.search_all
