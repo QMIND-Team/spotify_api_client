@@ -1,5 +1,5 @@
 import unittest
-import src
+import spotify_api_client as src
 
 
 class TestUrlParser(unittest.TestCase):
