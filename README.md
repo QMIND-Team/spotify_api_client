@@ -17,6 +17,12 @@ To use this library in your own projects, simply follow the following steps:
 git clone https://github.com/QMIND-Team/spotify_api_client.git
 ```
 
+_OR_ Install with pip
+
+```bash
+pip install git+https://github.com/QMIND-Team/spotify_api_client.git
+```
+
 2. Install the required pip packages
 
 ```bash
